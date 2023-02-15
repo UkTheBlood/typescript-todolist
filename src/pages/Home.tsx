@@ -5,6 +5,7 @@ import { todos, todotype } from '../shared/todos'
 import { RootState } from '../redux/config/configStore';
 import { addTodo, cancelTodo, deleteTodo, doneTodo } from '../redux/config/modules/todo';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 
 
@@ -73,12 +74,12 @@ function Home() {
     }
 
     return (
-        <div>
-            <div>
-                <p>My Todo List</p>
-                <p>React</p>
-            </div>
-            <div>
+        <Wrapper>
+            <Header>
+                <Todolist>My Todo List</Todolist>
+                <Reacttitle>React</Reacttitle>
+            </Header>
+            <InputBox>
                 <input
                     value={title}
                     onChange={titleChange}
@@ -88,7 +89,7 @@ function Home() {
                     onChange={descChange}
                 />
                 <button onClick={addButton}>추가하기</button>
-            </div>
+            </InputBox>
             <div>
                 <div>
                     <h3>Working...</h3>
@@ -97,7 +98,7 @@ function Home() {
                             return work.done === false
                         }).map((item: todotype) => {
                             return (
-                                <div key={item.id}>
+                                <BoxDiv key={item.id}>
                                     <Link
                                         key={item.id}
                                         to={`/working/${item.id}`}>상세보기</Link>
@@ -105,7 +106,7 @@ function Home() {
                                     <p>{item.desc}</p>
                                     <button onClick={() => deleteButton(item.id)}>삭제</button>
                                     <button onClick={() => doneButton(item.id)}>완료</button>
-                                </div>
+                                </BoxDiv>
                             )
                         })
                     }
@@ -117,7 +118,7 @@ function Home() {
                             return work.done === true
                         }).map((item: todotype) => {
                             return (
-                                <div key={item.id}>
+                                <BoxDiv key={item.id}>
 
                                     <Link
                                         key={item.id}
@@ -127,14 +128,50 @@ function Home() {
                                     <p>{item.desc}</p>
                                     <button onClick={() => deleteButton(item.id)}>삭제</button>
                                     <button onClick={() => cancelButton(item.id)}>취소</button>
-                                </div>
+                                </BoxDiv>
                             )
                         })
                     }
                 </div>
             </div>
-        </div>
+        </Wrapper>
     )
 }
 
-export default Home
+export default Home;
+
+
+const Wrapper = styled.div`
+    width: 1200px;
+    margin: 20px auto;
+`
+const Header = styled.div`
+    margin: 10px;
+    padding: 15px;
+    border: 1px solid black;
+    border-radius: 30px;
+`
+const Todolist = styled.p`
+    display: inline;
+    text-align: center;
+    margin-right: 1000px;
+    width: 300px;
+`
+const Reacttitle = styled.p`
+    display: inline;
+    text-align: right;
+`
+const InputBox = styled.div`
+    margin: 10px;
+    padding: 30px;
+    border-radius: 20px;
+    background-color: lightgray;
+`
+const BoxDiv = styled.div`
+    border: 3px solid green;
+    border-radius: 15px;
+    width: 200px;
+    height: 150px;
+    margin: 10px;
+    padding: 20px;
+` 
