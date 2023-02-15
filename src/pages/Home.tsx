@@ -1,25 +1,41 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { todos } from '../shared/todos'
+import { RootState } from '../redux/config/configStore';
 
 
 
 function Home() {
 
-    const data = useSelector((state) => {
+    const data = useSelector((state: RootState) => {
         console.log(state)
-        return 1
-        
+        return state.todo.todo;
     })
+
+    const dispatch = useDispatch();
 
     const [title, setTitle] = useState('');
     const [desc, setDesc] = useState('');
 
+    // input에 적는대로 렌더링이 일어남
     const titleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(event.currentTarget.value)
     }
     const descChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setDesc(event.currentTarget.value)
+    }
+
+    // 추가 버튼
+    const addButton = () => {
+        const newTodo = {
+            id: Math.random(),
+            title,
+            desc,
+            done: false,
+        }
+
+        // dispatch(addButton())
     }
 
     return (
@@ -37,6 +53,7 @@ function Home() {
                     value={desc}
                     onChange={descChange}
                 />
+                <button onClick={addButton}></button>
             </div>
             <div>
                 <div>
