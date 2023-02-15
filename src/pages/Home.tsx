@@ -3,7 +3,8 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { todos, todotype } from '../shared/todos'
 import { RootState } from '../redux/config/configStore';
-import { addTodo, deleteTodo, doneTodo } from '../redux/config/modules/todo';
+import { addTodo, cancelTodo, deleteTodo, doneTodo } from '../redux/config/modules/todo';
+import { Link } from 'react-router-dom';
 
 
 
@@ -12,8 +13,6 @@ function Home() {
     const data: any = useSelector((state: RootState) => {
         return state.todo
     })
-
-    console.log(data)
 
     const dispatch = useDispatch();
 
@@ -41,20 +40,36 @@ function Home() {
     }
 
     // 삭제 버튼
-    const deleteButton = (id: React.MouseEvent<HTMLButtonElement>) => {
-        const newTodo = data.filter(function (todo: any) {
-            console.log(data)
-            return todo.id !== id
+    const deleteButton = (id: number) => {
+
+        // console.log("data todo", data.todo)
+
+        const newTodo = data.todo.filter(function (x: any) {
+            console.log("x", x)
+            console.log("id", id)
+            return x.id !== id
         });
+        // console.log("삭제", newTodo)
 
         dispatch(deleteTodo(newTodo))
     }
 
     // 완료 버튼
-    const doneButton = (id: React.MouseEvent<HTMLButtonElement>) => {
-        const newTodo = data.todo.map((todo: any) => (todo.id === id ? { ...todo, done: !todo.done } : todo))
+    const doneButton = (id: number) => {
+        const newTodo = data.todo.map((x: any) =>
+            (x.id === id ? { ...x, done: !x.done } : x)
+        )
+        console.log("완료", newTodo)
 
         dispatch(doneTodo(newTodo))
+    }
+
+    // 취소 버튼
+    const cancelButton = (id: number) => {
+        const newTodo = data.todo.map((item: any) => (item.id === id ? { ...item, done: !item.done } : item))
+        console.log("취소", newTodo)
+
+        dispatch(cancelTodo(newTodo))
     }
 
     return (
@@ -77,18 +92,19 @@ function Home() {
             <div>
                 <div>
                     <h3>Working...</h3>
-
                     {
                         data.todo.filter(function (work: todotype) {
                             return work.done === false
                         }).map((item: todotype) => {
-                            return(
+                            return (
                                 <div key={item.id}>
-                                    <span>상세보기</span>
+                                    <Link
+                                        key={item.id}
+                                        to={`/working/${item.id}`}>상세보기</Link>
                                     <h3>{item.title}</h3>
                                     <p>{item.desc}</p>
-                                    <button onClick={deleteButton}>삭제</button>
-                                    <button onClick={doneButton}>완료</button>
+                                    <button onClick={() => deleteButton(item.id)}>삭제</button>
+                                    <button onClick={() => doneButton(item.id)}>완료</button>
                                 </div>
                             )
                         })
@@ -96,11 +112,25 @@ function Home() {
                 </div>
                 <div>
                     <h3>Done!!!</h3>
-                    <span>상세보기</span>
-                    <h4>title</h4>
-                    <p>desc</p>
-                    <button onClick={deleteButton}>삭제</button>
-                    <button onClick={deleteButton}>취소</button>
+                    {
+                        data.todo.filter(function (work: todotype) {
+                            return work.done === true
+                        }).map((item: todotype) => {
+                            return (
+                                <div key={item.id}>
+
+                                    <Link
+                                        key={item.id}
+                                        to={`/working/${item.id}`}>상세보기</Link>
+
+                                    <h3>{item.title}</h3>
+                                    <p>{item.desc}</p>
+                                    <button onClick={() => deleteButton(item.id)}>삭제</button>
+                                    <button onClick={() => cancelButton(item.id)}>취소</button>
+                                </div>
+                            )
+                        })
+                    }
                 </div>
             </div>
         </div>
