@@ -1,11 +1,16 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux';
 import { todos } from '../shared/todos'
 
 
 
 function Home() {
 
-    const [todo, setTodo] = useState(todos);
+    const data = useSelector((state) => {
+        console.log(state)
+        return state
+        
+    })
 
     const [title, setTitle] = useState('');
     const [desc, setDesc] = useState('');
