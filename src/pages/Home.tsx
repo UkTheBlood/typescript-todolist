@@ -8,7 +8,7 @@ function Home() {
 
     const data = useSelector((state) => {
         console.log(state)
-        return state
+        return 1
         
     })
 

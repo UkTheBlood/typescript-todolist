@@ -1,40 +1,34 @@
 import React from 'react'
-import { todos } from '../../../shared/todos'
+import { todos, todotype } from '../../../shared/todos'
 
 const add_Todo = 'todo/add_todo'
 const delete_Todo = 'todo/delete_Todo'
 const done_Todo = 'todo/done_Todo'
 const cancel_Todo = 'todo/cancel_Todo'
 
-interface todotype {
-    id: number;
-    title: string;
-    desc: string;
-    done: boolean;
-}
-
-export const addTodo = (payload: todotype) => {
+export const addTodo = (payload: any) => {
     return {
         type: add_Todo,
         payload: payload,
     }
 }
 
-export const deleteTodo = (payload: todotype) => {
+export const deleteTodo = (payload: any) => {
     return {
         type: delete_Todo,
         payload,
     }
 }
 
-export const doneTodo = (payload: todotype) => {
+export const doneTodo = (payload: any) => {
     return {
         type: done_Todo,
         payload,
     }
 }
 
-export const cancelTodo = (payload: todotype) => {
+export const cancelTodo = (payload: any) => {
+    // payload는 받아오는 값
     return {
         type: cancel_Todo,
         payload,
@@ -63,7 +57,9 @@ const todo = (state = initialState, action: any) => {   // 질문하기
             return {
                 todo: action.payload
             }
+        default:
+            return state;
     }
 }
 
-export default todo
+export default todo;

@@ -1,4 +1,4 @@
-interface todotype {
+export interface todotype {
     id: number;
     title: string;
     desc: string;
